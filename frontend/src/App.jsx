@@ -14,13 +14,20 @@ function App() {
   return (
     <div>
       <h1>{nombreApp} — Catálogo Streetwear</h1>
-      <ul>
-        {prendas.map((p) => (
-          <li key={p.id}>
-            {p.nombre} ({p.marca}, talla {p.talla}) — S/ {Number(p.precio).toFixed(2)}
-          </li>
-        ))}
-      </ul>
+
+      {prendas.length === 0 ? (
+        <p>No hay registros</p>
+      ) : (
+        <ul>
+          {prendas.map((p) => (
+            <li key={p.id}>
+              {p.nombre} ({p.marca}, talla {p.talla}) — S/ {Number(p.precio).toFixed(2)} —{' '}
+              {p.stock === 0 ? 'Agotado' : `Stock: ${p.stock}`}
+              {p.stock > 0 && p.stock <= 5 && ' ¡Últimas unidades!'}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
