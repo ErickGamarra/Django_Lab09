@@ -44,6 +44,23 @@ const pedidos = [
   },
 ]
 
+// Parte 2 — investigación propia (logistics).
+// Datos escritos a mano con la forma de GET /api/materiales/ (Semana 8).
+const materiales = [
+  { id: 1, categoria_nombre: 'Telas y Tejidos', nombre: 'Tela Algodón Pima 50/1 Negro', unidad_medida: 'Metros', precio_unitario: '34.50', stock: 450 },
+  { id: 2, categoria_nombre: 'Telas y Tejidos', nombre: 'Tela Franela Reactiva Oversize Crema', unidad_medida: 'Metros', precio_unitario: '28.00', stock: 320 },
+  { id: 3, categoria_nombre: 'Telas y Tejidos', nombre: 'Tela Rib 2x1 Spandex Negro', unidad_medida: 'Metros', precio_unitario: '22.50', stock: 180 },
+  { id: 4, categoria_nombre: 'Avíos y Fornituras', nombre: 'Cierre Metálico N° 5 Niquelado 60cm', unidad_medida: 'Piezas', precio_unitario: '3.80', stock: 1200 },
+  { id: 6, categoria_nombre: 'Hilados y Conos', nombre: 'Cono Hilo Poliéster 40/2 Negro', unidad_medida: 'Conos', precio_unitario: '8.50', stock: 0 },
+]
+
+// Datos escritos a mano con la forma de GET /api/proveedores/ (Semana 8).
+const proveedores = [
+  { id: 1, ruc: '20601234567', razon_social: 'Textiles del Sur S.A.C.', telefono: '987654321', correo: 'contacto@textilesdelsur.com' },
+  { id: 2, ruc: '20512345678', razon_social: 'Hilanderías Peruanas E.I.R.L.', telefono: '976543210', correo: 'ventas@hilanderiasperu.com' },
+  { id: 3, ruc: '20498765432', razon_social: 'Avíos & Cierres Industriales S.A.', telefono: '954321098', correo: 'operaciones@aviosindustriales.pe' },
+]
+
 const totalPedido = (pedido) =>
   pedido.detalles.reduce((acum, d) => acum + d.cantidad * Number(d.precio_unitario), 0)
 
@@ -94,6 +111,28 @@ function App() {
           ))}
         </ul>
       )}
+
+      <h2>Parte 2 — Logística e insumos textiles</h2>
+
+      <h3>Materiales</h3>
+      <ul className="lista">
+        {materiales.map((m) => (
+          <li key={m.id} className="tarjeta">
+            <strong>{m.nombre}</strong> · {m.categoria_nombre} — S/ {Number(m.precio_unitario).toFixed(2)} por{' '}
+            {m.unidad_medida.toLowerCase()} · Stock: {m.stock}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Proveedores</h3>
+      <ul className="lista">
+        {proveedores.map((pr) => (
+          <li key={pr.id} className="tarjeta">
+            <strong>{pr.razon_social}</strong> · RUC {pr.ruc}
+            <div>{pr.correo} · {pr.telefono}</div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
