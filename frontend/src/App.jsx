@@ -1,3 +1,5 @@
+import './App.css'
+
 // Datos escritos a mano con la forma de GET /api/prendas/ (Semana 8):
 // los decimales llegan como texto.
 const prendas = [
@@ -49,18 +51,24 @@ function App() {
   const nombreApp = 'UrbanTrend'
 
   return (
-    <div>
-      <h1>{nombreApp} — Catálogo Streetwear</h1>
+    <div className="contenedor">
+      <h1 className="titulo">{nombreApp} — Catálogo Streetwear</h1>
 
       {prendas.length === 0 ? (
         <p>No hay registros</p>
       ) : (
-        <ul>
+        <ul className="lista">
           {prendas.map((p) => (
-            <li key={p.id}>
+            <li key={p.id} className="tarjeta">
               {p.nombre} ({p.marca}, talla {p.talla}) — S/ {Number(p.precio).toFixed(2)} —{' '}
-              {p.stock === 0 ? 'Agotado' : `Stock: ${p.stock}`}
-              {p.stock > 0 && p.stock <= 5 && ' ¡Últimas unidades!'}
+              {p.stock === 0 ? (
+                <span className="etiqueta agotado">Agotado</span>
+              ) : (
+                <span className="etiqueta">Stock: {p.stock}</span>
+              )}
+              {p.stock > 0 && p.stock <= 5 && (
+                <span className="etiqueta alerta">¡Últimas unidades!</span>
+              )}
             </li>
           ))}
         </ul>
@@ -70,9 +78,9 @@ function App() {
       {pedidos.length === 0 ? (
         <p>No hay registros</p>
       ) : (
-        <ul>
+        <ul className="lista">
           {pedidos.map((pedido) => (
-            <li key={pedido.id}>
+            <li key={pedido.id} className="tarjeta">
               <strong>{pedido.codigo}</strong> — {pedido.cliente_nombre} ({pedido.estado})
               <ul>
                 {pedido.detalles.map((d) => (
@@ -81,7 +89,7 @@ function App() {
                   </li>
                 ))}
               </ul>
-              <strong>Total: S/ {totalPedido(pedido).toFixed(2)}</strong>
+              <strong style={{ color: '#0f766e' }}>Total: S/ {totalPedido(pedido).toFixed(2)}</strong>
             </li>
           ))}
         </ul>
