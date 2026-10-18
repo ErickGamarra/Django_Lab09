@@ -61,6 +61,36 @@ const proveedores = [
   { id: 3, ruc: '20498765432', razon_social: 'Avíos & Cierres Industriales S.A.', telefono: '954321098', correo: 'operaciones@aviosindustriales.pe' },
 ]
 
+// Datos escritos a mano con la forma de GET /api/despachos/ (Semana 8):
+// cada orden trae su arreglo de detalles (modelo intermedio DetalleDespacho
+// de la relación N:M entre OrdenDespacho y Material).
+const despachos = [
+  {
+    id: 1,
+    codigo: 'DSP-2026-001',
+    sucursal_nombre: 'Tienda Flagship Miraflores',
+    transportista_empresa: 'Logística Express SAC',
+    estado: 'En Tránsito',
+    detalles: [
+      { id: 1, material_nombre: 'Tela Algodón Pima 50/1 Negro', cantidad_despachada: 120, costo_unitario_historico: '34.50', lote_produccion: 'LOTE-2026-TX01' },
+      { id: 2, material_nombre: 'Tela Rib 2x1 Spandex Negro', cantidad_despachada: 60, costo_unitario_historico: '22.50', lote_produccion: 'LOTE-2026-TX02' },
+    ],
+  },
+  {
+    id: 2,
+    codigo: 'DSP-2026-002',
+    sucursal_nombre: 'Almacén Central Ate',
+    transportista_empresa: 'Transportes Andinos SRL',
+    estado: 'Borrador',
+    detalles: [
+      { id: 3, material_nombre: 'Cierre Metálico N° 5 Niquelado 60cm', cantidad_despachada: 300, costo_unitario_historico: '3.80', lote_produccion: 'LOTE-2026-AV01' },
+    ],
+  },
+]
+
+const costoDespacho = (orden) =>
+  orden.detalles.reduce((acum, d) => acum + d.cantidad_despachada * Number(d.costo_unitario_historico), 0)
+
 const totalPedido = (pedido) =>
   pedido.detalles.reduce((acum, d) => acum + d.cantidad * Number(d.precio_unitario), 0)
 
@@ -145,6 +175,31 @@ function App() {
             <li key={pr.id} className="tarjeta">
               <strong>{pr.razon_social}</strong> · RUC {pr.ruc}
               <div>{pr.correo} · {pr.telefono}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h3>Órdenes de despacho y sus materiales</h3>
+      {despachos.length === 0 ? (
+        <p className="vacio">No hay registros</p>
+      ) : (
+        <ul className="lista">
+          {despachos.map((orden) => (
+            <li key={orden.id} className="tarjeta">
+              <strong>{orden.codigo}</strong> → {orden.sucursal_nombre} · {orden.transportista_empresa} ({orden.estado})
+              <ul>
+                {orden.detalles.map((d) => (
+                  <li key={d.id}>
+                    {d.cantidad_despachada} × {d.material_nombre} ({d.lote_produccion}) — S/{' '}
+                    {(d.cantidad_despachada * Number(d.costo_unitario_historico)).toFixed(2)}
+                  </li>
+                ))}
+              </ul>
+              <strong style={{ color: '#0f766e' }}>
+                {orden.detalles.length} {orden.detalles.length === 1 ? 'material' : 'materiales'} · Costo total: S/{' '}
+                {costoDespacho(orden).toFixed(2)}
+              </strong>
             </li>
           ))}
         </ul>
