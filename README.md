@@ -9,23 +9,52 @@ Este repositorio parte del Laboratorio 08 (Django + API REST con DRF, en `src/`)
 
 ## Qué muestra la interfaz
 
-* **Parte 1 — Tienda:** lista de `prendas` (ternario `Agotado` / `Stock: n` y `&&` para `¡Últimas unidades!`) y `pedidos` con sus `detalles` anidados (1:N) y total por pedido.
-* **Parte 2 — Logística (investigación propia):** lista de `materiales`, lista de `proveedores` y `despachos` con sus `detalles` anidados (N:M mediante `DetalleDespacho`), con conteo y costo total por orden.
-* Mensaje `No hay registros` cuando un arreglo está vacío, estilos con `className` (`App.css`) y con `style={{ }}`.
+La página (`frontend/src/App.jsx`) tiene dos partes, con los datos escritos a mano:
+
+* **Parte 1 — Tienda de ropa**
+  * Lista de **prendas** (5 registros): precio con dos decimales, `Agotado` o `Stock: n` según el stock, y el aviso `¡Últimas unidades!` cuando quedan 5 o menos.
+  * Lista de **pedidos** (3 registros), cada uno con la lista de prendas que compró (relación 1:N) y su total calculado.
+* **Parte 2 — Logística e insumos textiles (investigación propia)**
+  * Lista de **materiales** (5 registros): categoría, precio por unidad, `Sin stock` o `Stock: n`, y el aviso `Stock bajo` si hay menos de 200.
+  * Lista de **proveedores** (3 registros): razón social, RUC y contacto.
+  * Lista de **órdenes de despacho** (2 registros), cada una con los materiales que lleva (relación N:M mediante `DetalleDespacho`), el número de materiales y el costo total del envío.
+* Cada lista muestra `No hay registros` cuando su arreglo está vacío.
+* Estilos con `className` (reglas en `App.css`) y con `style={{ }}`.
+
+## Estructura del frontend
+
+```text
+frontend/
+├── index.html        # única página HTML; contiene el div donde React dibuja
+├── package.json      # dependencias y scripts (dev, build, lint)
+├── vite.config.js
+└── src/
+    ├── main.jsx      # monta el componente App en la página
+    ├── App.jsx       # datos de ejemplo y toda la interfaz (JSX)
+    ├── App.css       # estilos de la página
+    └── index.css     # vacío
+```
 
 ## Instalar y ejecutar el frontend
 
-Requiere Node.js LTS.
+Requiere Node.js (versión LTS) y npm.
 
 ```bash
 cd frontend
-npm install
-npm run dev      # http://localhost:5173/
-npm run lint
-npm run build
+npm install      # instala las dependencias (crea node_modules/)
+npm run dev      # servidor de desarrollo en http://localhost:5173/
 ```
 
-`node_modules/` y `dist/` no se versionan.
+Otros comandos:
+
+```bash
+npm run lint     # revisa el código
+npm run build    # genera la versión para producción en dist/
+```
+
+`node_modules/` y `dist/` no se suben al repositorio (están en `frontend/.gitignore`).
+
+El backend de Django no hace falta para ver la interfaz. Las instrucciones para ejecutarlo están más abajo, en la sección del Laboratorio 08.
 
 ## Cambios sobre el Laboratorio 08
 
