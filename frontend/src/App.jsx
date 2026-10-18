@@ -115,24 +115,40 @@ function App() {
       <h2>Parte 2 — Logística e insumos textiles</h2>
 
       <h3>Materiales</h3>
-      <ul className="lista">
-        {materiales.map((m) => (
-          <li key={m.id} className="tarjeta">
-            <strong>{m.nombre}</strong> · {m.categoria_nombre} — S/ {Number(m.precio_unitario).toFixed(2)} por{' '}
-            {m.unidad_medida.toLowerCase()} · Stock: {m.stock}
-          </li>
-        ))}
-      </ul>
+      {materiales.length === 0 ? (
+        <p className="vacio">No hay registros</p>
+      ) : (
+        <ul className="lista">
+          {materiales.map((m) => (
+            <li key={m.id} className="tarjeta">
+              <strong>{m.nombre}</strong> · {m.categoria_nombre} — S/ {Number(m.precio_unitario).toFixed(2)} por{' '}
+              {m.unidad_medida.toLowerCase()}
+              {m.stock === 0 ? (
+                <span className="etiqueta agotado">Sin stock</span>
+              ) : (
+                <span className="etiqueta">Stock: {m.stock}</span>
+              )}
+              {m.stock > 0 && m.stock < 200 && (
+                <span className="etiqueta alerta" style={{ fontWeight: 700 }}>Stock bajo</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <h3>Proveedores</h3>
-      <ul className="lista">
-        {proveedores.map((pr) => (
-          <li key={pr.id} className="tarjeta">
-            <strong>{pr.razon_social}</strong> · RUC {pr.ruc}
-            <div>{pr.correo} · {pr.telefono}</div>
-          </li>
-        ))}
-      </ul>
+      {proveedores.length === 0 ? (
+        <p className="vacio">No hay registros</p>
+      ) : (
+        <ul className="lista">
+          {proveedores.map((pr) => (
+            <li key={pr.id} className="tarjeta">
+              <strong>{pr.razon_social}</strong> · RUC {pr.ruc}
+              <div>{pr.correo} · {pr.telefono}</div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
